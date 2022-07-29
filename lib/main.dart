@@ -1,9 +1,96 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/src/material/tab_controller.dart';
+import 'package:flutter_app/tabs/first.dart';
+import 'package:flutter_app/tabs/second.dart';
+import 'package:flutter_app/tabs/third.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    title: "flutter_app",
+    home: MyHome()
+  ));
 }
 
+class MyHome extends StatefulWidget {
+  @override
+  MyHomeState createState() => MyHomeState();
+}
+
+class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
+  late TabController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(
+      initialIndex: 0,
+      length: 3,
+      vsync: this
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  TabBar getTabBar() {
+    return TabBar(
+      tabs: <Tab>[
+        Tab(
+          icon: Icon(Icons.favorite)
+        ),
+        Tab(
+          icon: Icon(Icons.adb)
+        ),
+        Tab(
+          icon: Icon(Icons.airport_shuttle)
+        ),
+      ],
+      controller: controller,
+    );
+  }
+
+  TabBarView getTabBarView(var tabs) {
+    return TabBarView(
+      children: tabs,
+      controller: controller,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Flutter App"),
+        backgroundColor: Colors.blue,
+        // bottom: getTabBar()
+      ),
+      body: TabBarView(
+        children: <Widget>[First(), Second(), Third()],
+        controller: controller,
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.blue,
+        child: TabBar(
+          tabs: <Tab>[
+            Tab(
+              icon: Icon(Icons.favorite),
+            ),
+            Tab(
+              icon: Icon(Icons.adb),
+            ),
+            Tab(
+              icon: Icon(Icons.airport_shuttle),
+            ),
+          ],
+          controller: controller
+        )
+      ),
+    );
+  }
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
